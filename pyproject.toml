@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlops-tutorial"
+version = "0.1.0"
+description = "A tutorial project for learning MLOps concepts"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Artur Dragunov", email = "dragunovartur61@gmail.com" }]
+
+dependencies = [
+    "catboost>=1.2.8",
+    "flask>=3.1.2",
+    "matplotlib>=3.10.7",
+    "numpy>=2.3.4",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.7.2",
+    "seaborn>=0.13.2",
+    "xgboost>=3.1.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+
+[tool.setuptools]
+package-dir = {"" = "."}
