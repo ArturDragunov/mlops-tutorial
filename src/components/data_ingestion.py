@@ -12,9 +12,9 @@ from src.components.data_transformation import DataTransformationConfig
 
 from src.components.model_trainer import ModelTrainerConfig
 from src.components.model_trainer import ModelTrainer
-@dataclass
+@dataclass # dataclasses are used for ML tasks, and pydantic are used for GenAI 
 class DataIngestionConfig:
-    train_data_path: str=os.path.join('artifacts',"train.csv")
+    train_data_path: str=os.path.join('artifacts',"train.csv") # path is artifacts/train.csv
     test_data_path: str=os.path.join('artifacts',"test.csv")
     raw_data_path: str=os.path.join('artifacts',"data.csv")
 
@@ -30,6 +30,7 @@ class DataIngestion:
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path),exist_ok=True)
 
+            # raw data version saved
             df.to_csv(self.ingestion_config.raw_data_path,index=False,header=True)
 
             logging.info("Train test split initiated")
@@ -39,12 +40,11 @@ class DataIngestion:
 
             test_set.to_csv(self.ingestion_config.test_data_path,index=False,header=True)
 
-            logging.info("Inmgestion of the data iss completed")
+            logging.info("Ingestion of the data is completed")
 
             return(
                 self.ingestion_config.train_data_path,
                 self.ingestion_config.test_data_path
-
             )
         except Exception as e:
             raise CustomException(e,sys)
