@@ -27,13 +27,13 @@ class ModelTrainer:
     def __init__(self):
         self.model_trainer_config=ModelTrainerConfig()
 
-
+    # train and test arrays we will receive from initiate_data_transformation
     def initiate_model_trainer(self,train_array,test_array):
         try:
             logging.info("Split training and test input data")
             X_train,y_train,X_test,y_test=(
-                train_array[:,:-1],
-                train_array[:,-1],
+                train_array[:,:-1], # all columns except the last one (Y)
+                train_array[:,-1], # only last column
                 test_array[:,:-1],
                 test_array[:,-1]
             )
@@ -87,14 +87,18 @@ class ModelTrainer:
             model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
                                              models=models,param=params)
             
-            ## To get best model score from dict
-            best_model_score = max(sorted(model_report.values()))
-
-            ## To get best model name from dict
-
-            best_model_name = list(model_report.keys())[
-                list(model_report.values()).index(best_model_score)
-            ]
+            # find the item (key-value pair) with the maximum value
+            # model_report = {
+            #     "Random Forest": 0.85,
+            #     "Decision Tree": 0.72,
+            #     "Gradient Boosting": 0.88,
+            #     "Linear Regression": 0.65,
+            #     "XGBRegressor": 0.87,
+            #     "CatBoosting Regressor": 0.89,
+            #     "AdaBoost Regressor": 0.78,
+            #     }
+            best_model_name, best_model_score = max(model_report.items(), key=lambda x: x[1])
+            print(f'{best_model_name=}, {best_model_score=}')
             best_model = models[best_model_name]
 
             if best_model_score<0.6:
@@ -106,10 +110,7 @@ class ModelTrainer:
                 obj=best_model
             )
 
-            predicted=best_model.predict(X_test)
-
-            r2_square = r2_score(y_test, predicted)
-            return r2_square
+            return best_model_score
             
 
 
