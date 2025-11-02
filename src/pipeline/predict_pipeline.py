@@ -16,7 +16,8 @@ class PredictPipeline:
             model=load_object(file_path=model_path)
             preprocessor=load_object(file_path=preprocessor_path)
             print("After Loading")
-            data_scaled=preprocessor.transform(features)
+            # we transform based on train data statistics
+            data_scaled=preprocessor.transform(features) 
             preds=model.predict(data_scaled)
             return preds
         
